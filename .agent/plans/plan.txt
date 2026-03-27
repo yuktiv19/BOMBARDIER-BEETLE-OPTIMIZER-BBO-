@@ -1,0 +1,18 @@
+IMPROVEMENTS THAT COULD BE MADE
+
+1. Vectorization (Performance Optimization)
+The current implementation uses nested loops over n_beetles, which is slow in Python. By using NumPy broadcasting, you can calculate all beetle movements simultaneously.
+Benefit: Reduces execution time by 10x–100x for large populations or high dimensions.
+Implementation: Replace the inner for i in range(n_beetles) loop with matrix operations.
+2. Predator Selection Strategy
+The current code uses only the "global best" as the predator. This can lead to premature convergence (getting stuck in a local minimum).
+The Optimization: Instead of always moving toward the global best, select a predator using a Tournament Selection or a Random Beetle from the top 10% of the population.
+Benefit: Maintains population diversity and helps the algorithm escape local optima.
+3. Dynamic Step Size in Escape Mechanism
+The "Lift" ($L$) based escape mechanism currently uses a static division by the iteration count $t$.
+The Optimization: Implement a Levy Flight distribution for the escape step. Levy flights consist of many small steps and occasional long jumps, which is mathematically proven to be more efficient for searching unknown landscapes than a standard linear decay.
+4. Constraint Handling
+If a beetle "flies" outside the lower or upper bounds, the current code simply clips it to the edge. This causes beetles to "clump" at the boundaries.
+The Optimization: Use Reflective Boundaries. If a beetle exceeds the upper bound by 5 units, reflect it so it lands 5 units inside the boundary.
+Formula: if x > ub: x = ub - (x - ub)
+
